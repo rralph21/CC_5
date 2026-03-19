@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
+        "generate-docs": "ts-node scripts/generate-openapi.ts && npx @redocly/cli build-docs openapi.json --output docs/index.html",
         "test": "jest",
         "start": "ts-node src/server.ts"
     },
@@ -11,16 +12,27 @@
     "license": "ISC",
     "description": "",
     "dependencies": {
-        "express": "^5.1.0"
+        "cors": "^2.8.6",
+        "dotenv": "^17.3.1",
+        "express": "^5.2.1",
+        "helmet": "^8.1.0",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.1"
     },
     "devDependencies": {
-        "@types/express": "^5.0.2",
-        "@types/node": "^22.15.24",
+        "@redocly/cli": "^2.24.0",
+        "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.6",
+        "@types/jest": "^29.5.14",
+        "@types/node": "^22.19.15",
+        "@types/supertest": "^7.2.0",
+        "@types/swagger-jsdoc": "^6.0.4",
+        "@types/swagger-ui-express": "^4.1.8",
+        "jest": "^30.3.0",
+        "supertest": "^7.2.2",
+        "ts-jest": "^29.4.6",
         "ts-node": "^10.9.2",
-        "typescript": "^5.8.3",
-        "jest": "^30.0.0",
-        "ts-jest": "^29.2.5",
-        "@types/jest": "^29.5.14"
+        "typescript": "^5.9.3"
     },
     "jest": {
         "preset": "ts-jest",
@@ -34,5 +46,16 @@
         "transform": {
             "^.+\\.ts$": "ts-jest"
         }
-    }
+    },
+    "directories": {
+        "test": "test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rralph21/CC_5.git"
+    },
+    "bugs": {
+        "url": "https://github.com/rralph21/CC_5/issues"
+    },
+    "homepage": "https://github.com/rralph21/CC_5#readme"
 }
