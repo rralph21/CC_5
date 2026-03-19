@@ -1,4 +1,3 @@
-
 import { Request, Response } from "express";
 import { getAllResourcesAsync, getResourceByIdAsync, createResourceAsync } from "../services/resourceService";
 
@@ -12,10 +11,11 @@ export const getAllResources = (req: Request, res: Response) => {
         });
 };
 
-export const getResourceById = (req: Request, res: Response) => {
+export const getResourceById = (req: Request, res: Response): void => {
     const id = Number(req.params.id);
     if (Number.isNaN(id) || id < 1) {
-        return res.status(400).json({ message: "Invalid resource ID" });
+        res.status(400).json({ message: "Invalid resource ID" });
+        return;
     }
 
     getResourceByIdAsync(id)
@@ -30,10 +30,11 @@ export const getResourceById = (req: Request, res: Response) => {
         });
 };
 
-export const createResource = (req: Request, res: Response) => {
+export const createResource = (req: Request, res: Response): void => {
     const { title, type, url, description } = req.body;
     if (!title || !type || !url || !description) {
-        return res.status(400).json({ message: "Missing required resource fields" });
+        res.status(400).json({ message: "Missing required resource fields" });
+        return;
     }
 
     createResourceAsync({ title, type, url, description })

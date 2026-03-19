@@ -1,0 +1,260 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Resource Management API Documentation",
+    "version": "1.0.0",
+    "description": "This is the API documentation for the Resource Management application."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Resource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "Express.js Guide"
+          },
+          "type": {
+            "type": "string",
+            "example": "documentation"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://expressjs.com/en/guide"
+          },
+          "description": {
+            "type": "string",
+            "example": "Official Express.js documentation"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-12-30T12:34:56.789Z"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "type",
+          "url",
+          "description",
+          "createdAt"
+        ]
+      },
+      "NewResource": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Jest Testing Tutorial"
+          },
+          "type": {
+            "type": "string",
+            "example": "tutorial"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/jest-tutorial"
+          },
+          "description": {
+            "type": "string",
+            "example": "Complete guide to testing with Jest"
+          }
+        },
+        "required": [
+          "title",
+          "type",
+          "url",
+          "description"
+        ]
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/resources": {
+      "get": {
+        "summary": "Get all resources",
+        "tags": [
+          "Resources"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of resources",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Resource"
+                  }
+                },
+                "examples": {
+                  "example": {
+                    "summary": "A list of resources",
+                    "value": [
+                      {
+                        "id": 1,
+                        "title": "Express.js Guide",
+                        "type": "documentation",
+                        "url": "https://expressjs.com/en/guide",
+                        "description": "Official Express.js documentation",
+                        "createdAt": "2025-12-30T12:34:56.789Z"
+                      },
+                      {
+                        "id": 2,
+                        "title": "TypeScript Basics",
+                        "type": "video",
+                        "url": "https://example.com/ts-basics",
+                        "description": "Introduction to TypeScript",
+                        "createdAt": "2025-12-29T10:21:00.000Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new resource",
+        "tags": [
+          "Resources"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewResource"
+              },
+              "examples": {
+                "example": {
+                  "summary": "New resource payload",
+                  "value": {
+                    "title": "Jest Testing Tutorial",
+                    "type": "tutorial",
+                    "url": "https://example.com/jest-tutorial",
+                    "description": "Complete guide to testing with Jest"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Resource"
+                },
+                "examples": {
+                  "example": {
+                    "summary": "Created resource response",
+                    "value": {
+                      "id": 5,
+                      "title": "Jest Testing Tutorial",
+                      "type": "tutorial",
+                      "url": "https://example.com/jest-tutorial",
+                      "description": "Complete guide to testing with Jest",
+                      "createdAt": "2025-12-30T13:00:00.000Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required fields"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/resources/{id}": {
+      "get": {
+        "summary": "Get a resource by id",
+        "tags": [
+          "Resources"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric id of the resource to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Single resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Resource"
+                },
+                "examples": {
+                  "example": {
+                    "summary": "A single resource",
+                    "value": {
+                      "id": 1,
+                      "title": "Express.js Guide",
+                      "type": "documentation",
+                      "url": "https://expressjs.com/en/guide",
+                      "description": "Official Express.js documentation",
+                      "createdAt": "2025-12-30T12:34:56.789Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}

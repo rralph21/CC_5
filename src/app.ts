@@ -1,12 +1,24 @@
 import express, { Express } from "express";
+import { apiHelmetConfig } from "./config/helmetConfig";
 import resourceRouter from "./api/v1/router/resourceRouter";
+import setupSwagger from "./config/swagger";
+import dotenv from "dotenv";
+import { getCorsOptions } from "./config/corsConfig";
+import cors from "cors";
+
+dotenv.config();
+
 // Initialize Express application
-let app: Express = express();
+const app: Express = express();
 
 // Define a route
 app.get("/", (req, res) => {
     res.send("It's Online!!");
 });
+
+
+
+app.use(express.json());
 
 app.get("/api/v1/health", (req, res) => {
     res.json({
@@ -17,9 +29,10 @@ app.get("/api/v1/health", (req, res) => {
     });
 });
 
-app.use(express.json());
 
 
 app.use("/api/v1", resourceRouter);
-
+app.use(cors(getCorsOptions()));
+app.use(apiHelmetConfig);
+setupSwagger(app);
 export default app;
